@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+
+<title>Demo of ngValidate Module</title>
+
+<meta name="description" content="Demo of ngValidate Module">
+<meta name="author" content="Rijul Bansal">
+
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
+<link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" rel="stylesheet">
+<link href="demo-style.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<body onload="prettyPrint()">
+
+<!-- BEGIN DEMO -->
+
+<div class="container" ng-app="demoModule">
+
+  <div class="navbar navbar-inverse">
+    <div class="navbar-inner">
+      <a class="brand" href="#">Angular ngValidate</a>
+    </div>
+  </div>
+
+  <div class="hero-unit">
+
+    <div ng-controller="DemoCtrl">
+
+        <form name="demoForm" novalidate>
+            <div class="col-xs-12">
+                <input type="text" ng-model="user.name" name="field_name" ng-validate="exampleStrategy"/>
+                <input type="text" ng-model="user.field" name="field_name" ng-validate="exampleStrategy2"/>
+            </div>
+            <div class="col-xs-12">
+                <input type="text" ng-model="user.field2" name="field_name" ng-validate="exampleStrategy3"/>
+            </div>
+            
+        </form>
+
+        <div class="row">
+            <div class="col-xs-6"><pre>{{demoForm | json}}</pre></div>
+            <div class="col-xs-6"><pre>{{user | json}}</pre></div>
+        </div>
+
+    </div>
+  </div>
+
+
+<!-- JAVASCRIPT -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular.js"></script>
+<script src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script src="../src/ngValidate.js"></script>
+<script src="demo-app.js"></script>
+</body>
+</html>
