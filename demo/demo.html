@@ -33,10 +33,11 @@
 
         <form name="demoForm" novalidate>
             <div class="col-xs-12">
-                <input type="text" ng-model="user.name" name="field_name" ng-validate="exampleStrategy"/>
+                <span>required maxlength:32</span>
                 <input type="text" ng-model="user.field" name="field_name" ng-validate="exampleStrategy2"/>
             </div>
             <div class="col-xs-12">
+                <span>minlength:8 maxlength:32</span>
                 <input type="text" ng-model="user.field2" name="field_name" ng-validate="exampleStrategy3"/>
             </div>
             

@@ -4,115 +4,38 @@
 var module = angular.module('ngValidateModule',[]);
 
 module
-    .directive('ngValidate', function ($log,$compile) {
+    .directive('ngValidate', function ($log,$compile,ngValidateFactory) {
 
-        //generic function example
-        var allowedChars = function(){
-            console.log("in allowed chars");
-            return true;
-        };
-
-        var minLength = function(testVal,expectedVal){
-            console.log("in minlength");
-            return testVal.length >= expectedVal;
-        };
-
-        var maxLength = function(testVal,expectedVal){
-            console.log("in maxlength");
-            return testVal.length <= expectedVal;
-        };
-
-        var required = function(testVal){
-            console.log("in required");
-            return !!testVal;
-        };
-
-        var pattern = function(testVal,patternval){
-            console.log("in pattern");
-            return patternval.test(testVal);
-        };
-
-        var emailPattern = function(testVal){
-            console.log("in email pattern");
-            return pattern(testVal,/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-        };
-
-        var equalTo = function(testVal,expectedVal){
-            console.log("in equalTo");
-            return testVal === expectedVal;
-        };
-
-        var exampleStrategy = [
-                {
-                    value:required,
-                    message:'This Field is required'
-                },
-                {
-                    value:[minLength,8],
-                    message:'Minimum 8 characters required'
-                },
-                {
-                    value:[maxLength,32],
-                    message:'Maximum 32 characters allowed'
-                },
-                {
-                    value: emailPattern,
-                    message: 'Not a valid email'
-                },
-                {
-                    value: allowedChars,
-                    message: 'Field does not pass custom function test 2'
-                }
-            ];
-
-
-        var validationStrategies = {};
-
-        //insert on directive init
-        validationStrategies.exampleStrategy = exampleStrategy;
-        validationStrategies.exampleStrategy2 = [
-            {
-                value:required,
-                message:'This Field is required'
-            },
-            {
-                value:[maxLength,32],
-                message:'Maximum 32 characters allowed'
-            }
-
-        ];
-        validationStrategies.exampleStrategy3 = [
-            {
-                value:[minLength,8],
-                message:'Minimum 8 characters required'
-            },
-            {
-                value:[maxLength,32],
-                message:'Maximum 32 characters allowed'
-            }
-
-        ];
-
-        var validationFunction = function (scope, elem, attrs, ctrl) {
+        var validationFunction = function (scope, element, attrs, ctrl) {
 
             var strategy = attrs.ngValidate;
-            var validationCase = validationStrategies[strategy];
-            $log.info("Strategy Name: " + strategy);
-            $log.info("validationStrategies[" + strategy + "] is : " + validationCase);
+            var validationCase = ngValidateFactory.strategies[strategy];
+
+            $log.info('validating element:');
+            $log.info(element);
+            $log.info("with strategy: " + strategy);
 
             if(!validationCase || !angular.isArray(validationCase) || validationCase.length==0){
                 $log.info("Invalid validation case. Validating as true.");
                 ctrl.$setValidity("emptyValidation",true);
+                return;
             }
 
-            //check controller visibility
+            //Validate as invisible elements as Valid
+            //check controller visibility-Jquery style (visible if width>0 & height>0, visibility hidden considered visible)
+            if(!(element.prop('offsetWidth')>0 && element.prop('offsetHeight')>0)){
+                $log.info("Invisible element validation case. Validating as true.");
+                ctrl.$setValidity("notVisibleValidation",true);
+                return;
+            }
+
             var isValid,errorMessage,callFunction;
             for(var i= 0,l=validationCase.length;i<l;++i){
                 if(angular.isFunction(validationCase[i].value)){
-                    isValid = validationCase[i].value(elem.val());
+                    isValid = validationCase[i].value(element.val());
                 }else if(angular.isArray(validationCase[i].value)){
                     var argumentsArray = validationCase[i].value.slice(1);
-                    argumentsArray.unshift(elem.val());
+                    argumentsArray.unshift(element.val());
                     isValid = validationCase[i].value[0].apply(null,argumentsArray);
                 }
 
@@ -131,14 +54,101 @@ module
         return {
             require: 'ngModel',
             scope: true,
-            link: function (scope, elem, attrs, ctrl) {
-                scope.errorMessage="fail"
-                elem.after($compile(angular.element('<span ng-show="errorStatus" ng-bind="errorMessage"></span>'))(scope));
-                //elem.after('<span ng-show="errorStatus" ng-bind="errorMessage"></span>');
-                scope.$on('ng-validate',function(){validationFunction(scope, elem, attrs, ctrl)});
-                elem.on('blur',function(){validationFunction(scope, elem, attrs, ctrl)})
+            link: function (scope, element, attrs, ctrl) {
+                element.after($compile(angular.element('<span ng-show="errorStatus" ng-bind="errorMessage"></span>'))(scope));
+                scope.$on('ng-validate',function(){validationFunction(scope, element, attrs, ctrl)});
+                element.on('blur',function(){
+                    validationFunction(scope, element, attrs, ctrl);
+                })
             }
         };
 
 
-    });
+    })
+
+.factory('ngValidateFactory',function(){
+        var ngValidate = {};
+
+        //generic function example
+        ngValidate.allowedChars = function(){
+            return true;
+        };
+
+        ngValidate.minLength = function(testVal,expectedVal){
+            return testVal.length >= expectedVal;
+        };
+
+        ngValidate.maxLength = function(testVal,expectedVal){
+            return testVal.length <= expectedVal;
+        };
+
+        ngValidate.required = function(testVal){
+            return !!testVal;
+        };
+
+        ngValidate.pattern = function(testVal,patternval){
+            return patternval.test(testVal);
+        };
+
+        ngValidate.emailPattern = function(testVal){
+            return pattern(testVal,/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+        };
+
+        ngValidate.equalTo = function(testVal,expectedVal){
+            return testVal === expectedVal;
+        };
+
+
+        ngValidate.strategies = {};
+
+        //TODO:Default Strategies
+
+        //insert on directive init
+        ngValidate.strategies.exampleStrategy1 = [
+            {
+                value:ngValidate.required,
+                message:'This Field is required'
+            },
+            {
+                value:[ngValidate.minLength,8],
+                message:'Minimum 8 characters required'
+            },
+            {
+                value:[ngValidate.maxLength,32],
+                message:'Maximum 32 characters allowed'
+            },
+            {
+                value: ngValidate.emailPattern,
+                message: 'Not a valid email'
+            },
+            {
+                value: ngValidate.allowedChars,
+                message: 'Field does not pass custom function test 2'
+            }
+        ];
+
+        ngValidate.strategies.exampleStrategy2 = [
+            {
+                value:ngValidate.required,
+                message:'This Field is required'
+            },
+            {
+                value:[ngValidate.maxLength,32],
+                message:'Maximum 32 characters allowed'
+            }
+        ];
+
+        ngValidate.strategies.exampleStrategy3 = [
+            {
+                value:[ngValidate.minLength,8],
+                message:'Minimum 8 characters required'
+            },
+            {
+                value:[ngValidate.maxLength,32],
+                message:'Maximum 32 characters allowed'
+            }
+        ];
+
+        return ngValidate;
+
+    })
