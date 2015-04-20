@@ -32,9 +32,10 @@
     <div ng-controller="DemoCtrl">
 
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-12 alert-info">
                 Type in the input below. Validation occurs on input blur event
             </div>
+            <br>
         </div>
         <div class="row">
             <form name="demoForm" novalidate>
@@ -47,6 +48,8 @@
                     <input type="text" ng-model="user.field2" name="field_name" ng-validate="exampleStrategy3"/>
                 </div>
             </form>
+            <button class="btn btn-default" ng-click="validate()">Broadcast ng-validate event</button>
+            <div class="col-xs-12"><br/></div>
         </div>
 
         <div class="row">

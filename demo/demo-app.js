@@ -45,5 +45,8 @@ window.angular.module('demoModule', ['ngValidateModule'])
 .controller('DemoCtrl',
   function($scope) {
       $scope.user = {};
+      $scope.validate = function(){
+          $scope.$broadcast('ng-validate');
+      }
   }
 );
