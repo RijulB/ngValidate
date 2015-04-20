@@ -8,6 +8,13 @@ module
 
         var validationFunction = function (scope, element, attrs, ctrl) {
 
+            //Validate as invisible elements as Valid
+            //check controller visibility-Jquery style (visible if width>0 & height>0, visibility hidden considered visible)
+            if(!(element.prop('offsetWidth')>0 && element.prop('offsetHeight')>0)){
+                ctrl.$setValidity("notVisibleValidation",true);
+                return;
+            }
+
             var strategy = attrs.ngValidate;
             var validationCase = ngValidateFactory.strategies[strategy];
 
@@ -18,14 +25,6 @@ module
             if(!validationCase || !angular.isArray(validationCase) || validationCase.length==0){
                 $log.info("Invalid validation case. Validating as true.");
                 ctrl.$setValidity("emptyValidation",true);
-                return;
-            }
-
-            //Validate as invisible elements as Valid
-            //check controller visibility-Jquery style (visible if width>0 & height>0, visibility hidden considered visible)
-            if(!(element.prop('offsetWidth')>0 && element.prop('offsetHeight')>0)){
-                $log.info("Invisible element validation case. Validating as true.");
-                ctrl.$setValidity("notVisibleValidation",true);
                 return;
             }
 
@@ -47,7 +46,7 @@ module
             }
             scope.errorStatus  = !isValid;
             scope.errorMessage = errorMessage;
-            scope.$apply()
+            scope.$apply();
 
         };
 
@@ -98,56 +97,28 @@ module
             return testVal === expectedVal;
         };
 
-
         ngValidate.strategies = {};
 
-        //TODO:Default Strategies
+        //Default Strategies
+        ngValidate.strategies.required = [{
+            value:ngValidate.required,
+            message:'This Field is required'
+        }];
 
-        //insert on directive init
-        ngValidate.strategies.exampleStrategy1 = [
-            {
-                value:ngValidate.required,
-                message:'This Field is required'
-            },
-            {
-                value:[ngValidate.minLength,8],
-                message:'Minimum 8 characters required'
-            },
-            {
-                value:[ngValidate.maxLength,32],
-                message:'Maximum 32 characters allowed'
-            },
-            {
-                value: ngValidate.emailPattern,
-                message: 'Not a valid email'
-            },
-            {
-                value: ngValidate.allowedChars,
-                message: 'Field does not pass custom function test 2'
-            }
-        ];
+        ngValidate.strategies.minLength = [{
+            value:[ngValidate.minLength,8],
+            message:'Minimum 8 characters required'
+        }];
 
-        ngValidate.strategies.exampleStrategy2 = [
-            {
-                value:ngValidate.required,
-                message:'This Field is required'
-            },
-            {
-                value:[ngValidate.maxLength,32],
-                message:'Maximum 32 characters allowed'
-            }
-        ];
+        ngValidate.strategies.maxLength = [{
+            value:[ngValidate.maxLength,32],
+            message:'Maximum 32 characters allowed'
+        }];
 
-        ngValidate.strategies.exampleStrategy3 = [
-            {
-                value:[ngValidate.minLength,8],
-                message:'Minimum 8 characters required'
-            },
-            {
-                value:[ngValidate.maxLength,32],
-                message:'Maximum 32 characters allowed'
-            }
-        ];
+        ngValidate.strategies.email = [{
+            value:[ngValidate.maxLength,32],
+            message:'Please enter valid email address'
+        }];
 
         return ngValidate;
 
