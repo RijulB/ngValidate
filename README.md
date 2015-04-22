@@ -1,6 +1,9 @@
 ng-validate (Angular form validations with error messages)
 =====================
 An Angular module for Form Validation with inline error messages, **v0.0.1**
+
+MIT License
+
 ##Quick Example
 
 Check out the full demo at http://plnkr.co/edit/T2imkFf1yYKPB2ljkYtR
