@@ -41,11 +41,11 @@
             <form name="demoForm" novalidate>
                 <div class="col-xs-12">
                     <span>Input 1. Is required with maxlength=32</span>
-                    <input type="text" ng-model="user.field" name="field_name" ng-validate="exampleStrategy2"/>
+                    <input type="text" ng-model="user.field" name="field_1" ng-validate="exampleStrategy2"/>
                 </div>
                 <div class="col-xs-12">
                     <span>Input 2. Should have minlength=8 and maxlength=32</span>
-                    <input type="text" ng-model="user.field2" name="field_name" ng-validate="exampleStrategy3"/>
+                    <input type="text" ng-model="user.field2" name="field_2" ng-validate="exampleStrategy3"/>
                 </div>
             </form>
             <button class="btn btn-default" ng-click="validate()">Broadcast ng-validate event</button>

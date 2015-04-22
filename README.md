@@ -30,7 +30,8 @@ ngValidateFactory.strategies.demoStrategy = [
 ```
 
 ###Important
-Invisible elements are validated as true. Elements are considered invisible if width and height are zero. Hence `visibility:hidden` will not be considered invisible. 
+**1.** **Invisible elements are validated as true.** Elements are considered invisible if width and height are zero. Hence `visibility:hidden` will not be considered invisible.
+**2.** **Disabled elements are validates as true.**
 
 ##Table of contents:
 - [Get Started](#get-started)
@@ -113,22 +114,27 @@ Returns truthy value of input value
 Default Error Message: "This field is required"
 
 ####minLength
-Usage: `ng-validate="minLength:<length>"`
-Input value should be atleast `<length>` characters.
-Example: `ng-validate="minLength:8"`
+Usage: `ng-validate="minLength"`
+Example: `ng-validate="minLength"`
 Default Error Message: "Minimum 8 characters required"
+Note: Use `ngValidateFactory.strategies.minLength.value[1]` to set length value. Default is 8.
+Example `ngValidateFactory.strategies.minLength.value[1] = 10`
 
 ####maxLength
-Usage: `ng-validate="maxLength:<length>"`
-Input value can be atmost `<length>` characters.
-Example: `ng-validate="maxLength:32"`
+Usage: `ng-validate="maxLength"`
+Example: `ng-validate="maxLength"`
 Default Error Message: "Maximum 32 characters allowed"
+Note: Use `ngValidateFactory.strategies.maxLength.value[1]` to set length value. Default is 32.
+Example `ngValidateFactory.strategies.maxLength.value[1] = 40`
+
 
 ####pattern
-Usage: `ng-validate="pattern:<regex-pattern>"`
+Usage: `ng-validate="pattern"`
 Input value should match `<regex-pattern>`.
-Example: `ng-validate="pattern:/^[0-9]$/"`
+Example: `ng-validate="pattern"`
 Default Error Message: "Invalid characters"
+Note: Use `ngValidateFactory.strategies.pattern.value[1]` to set test pattern. Default is none.
+Example `ngValidateFactory.strategies.pattern.value[1] = /^[0-9]$/`
 
 ####email
 Usage: `ng-validate="email"`
