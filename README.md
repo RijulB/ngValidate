@@ -35,6 +35,8 @@ ngValidateFactory.strategies.demoStrategy = [
 ###Important
 **1.** **Invisible elements are validated as true.** Elements are considered invisible if width and height are zero. Hence `visibility:hidden` will not be considered invisible.
 **2.** **Disabled elements are validates as true.**
+**3.** **Broadcast `ng-validate` to validate all fields at once. Ex: `$scope.$broadcast('ng-validate')`
+
 
 ##Table of contents:
 - [Get Started](#get-started)
