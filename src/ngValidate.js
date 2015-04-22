@@ -6,7 +6,7 @@ var module = angular.module('ngValidateModule',[]);
 module
     .directive('ngValidate', function ($log,$compile,ngValidateFactory) {
 
-        var validationFunction = function (scope, element, attrs, ctrl) {
+        var validationFunction = function (scope, element, attrs, ctrl, fromBroadcast) {
 
             //Validate as invisible elements as Valid
             //check controller visibility-Jquery style (visible if width>0 & height>0, visibility hidden considered visible)
@@ -15,8 +15,16 @@ module
                 return;
             }
 
+            //Validate as disabled elements as Valid
+            if(!!attrs.disabled){
+                ctrl.$setValidity("notVisibleValidation",true);
+                return;
+            }
+
             var strategy = attrs.ngValidate;
             var validationCase = ngValidateFactory.strategies[strategy];
+
+            //TODO case:arg syntax for minlength:length, maxlength:length, pattern:regex
 
             $log.info('validating element:');
             $log.info(element);
@@ -46,7 +54,7 @@ module
             }
             scope.errorStatus  = !isValid;
             scope.errorMessage = errorMessage;
-            scope.$apply();
+            if(!fromBroadcast) scope.$apply();
 
         };
 
@@ -55,9 +63,9 @@ module
             scope: true,
             link: function (scope, element, attrs, ctrl) {
                 element.after($compile(angular.element('<span ng-show="errorStatus" ng-bind="errorMessage"></span>'))(scope));
-                scope.$on('ng-validate',function(){validationFunction(scope, element, attrs, ctrl)});
+                scope.$on('ng-validate',function(){validationFunction(scope, element, attrs, ctrl, true)});
                 element.on('blur',function(){
-                    validationFunction(scope, element, attrs, ctrl);
+                    validationFunction(scope, element, attrs, ctrl, false);
                 })
             }
         };
