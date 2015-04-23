@@ -34,8 +34,10 @@ ngValidateFactory.strategies.demoStrategy = [
 
 ###Important
 **1.** **Invisible elements are validated as true.** Elements are considered invisible if width and height are zero. Hence `visibility:hidden` will not be considered invisible.
+
 **2.** **Disabled elements are validates as true.**
-**3.** **Broadcast `ng-validate` to validate all fields at once. Ex: `$scope.$broadcast('ng-validate')`
+
+**3.** **Broadcast** `ng-validate` to validate all fields at once. Ex: `$scope.$broadcast('ng-validate')`
 
 
 ##Table of contents:
@@ -115,35 +117,52 @@ Some common strategies are available by default.
 
 ####required
 Usage: `ng-validate="required"`
+
 Returns truthy value of input value
+
 Default Error Message: "This field is required"
 
 ####minLength
 Usage: `ng-validate="minLength"`
+
 Example: `ng-validate="minLength"`
+
 Default Error Message: "Minimum 8 characters required"
+
 Note: Use `ngValidateFactory.strategies.minLength.value[1]` to set length value. Default is 8.
+
 Example `ngValidateFactory.strategies.minLength.value[1] = 10`
 
 ####maxLength
 Usage: `ng-validate="maxLength"`
+
 Example: `ng-validate="maxLength"`
+
 Default Error Message: "Maximum 32 characters allowed"
+
 Note: Use `ngValidateFactory.strategies.maxLength.value[1]` to set length value. Default is 32.
+
 Example `ngValidateFactory.strategies.maxLength.value[1] = 40`
 
 
 ####pattern
 Usage: `ng-validate="pattern"`
+
 Input value should match `<regex-pattern>`.
+
 Example: `ng-validate="pattern"`
+
 Default Error Message: "Invalid characters"
+
 Note: Use `ngValidateFactory.strategies.pattern.value[1]` to set test pattern. Default is none.
+
 Example `ngValidateFactory.strategies.pattern.value[1] = /^[0-9]$/`
 
 ####email
 Usage: `ng-validate="email"`
+
 Returns if input matches `/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$`
+
 Default Error Message: "Please enter valid email address"
 
 ###Custom Strategies
@@ -180,10 +199,14 @@ ngValidateFactory.strategies.demoValidationStrategy = [
 ```
 ###Event
 Validations get triggered using two methods.
-**1**
+
+**1.**
 On Input blur
-**2**
+
+
+**2.**
 `ng-validate` event
+
 Example: `$scope.$broadcast('ng-validate')`
 
 ##API Documentation
@@ -192,6 +215,7 @@ Example: `$scope.$broadcast('ng-validate')`
 
 ###ngValidateFactory.required Function
 **Returns** true if input value is truthy.
+
 **Usage**
 ```js
 ngValidateFactory.strategies.demoValidationStrategy = [
@@ -204,7 +228,9 @@ ngValidateFactory.strategies.demoValidationStrategy = [
 
 ###ngValidateFactory.minLength Function
 **Expects** one argument, minimum length
+
 **Returns** true if input length is more than or equal to min value.
+
 **Usage**
 ```js
 ngValidateFactory.strategies.demoValidationStrategy = [
@@ -217,7 +243,9 @@ ngValidateFactory.strategies.demoValidationStrategy = [
 
 ###ngValidateFactory.maxLength Function
 **Expects** one argument, maximum length
+
 **Returns** true if input length is less than max value.
+
 **Usage**
 ```js
 ngValidateFactory.strategies.demoValidationStrategy = [
@@ -230,7 +258,9 @@ ngValidateFactory.strategies.demoValidationStrategy = [
 
 ###ngValidateFactory.pattern Function
 **Expects** one argument, regex expression
+
 **Returns** true if input matches regex expression.
+
 **Usage**
 ```js
 ngValidateFactory.strategies.demoValidationStrategy = [
@@ -243,6 +273,7 @@ ngValidateFactory.strategies.demoValidationStrategy = [
 
 ###ngValidateFactory.email Function
 **Returns** true if input matches `/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$`
+
 **Usage**
 ```js
 ngValidateFactory.strategies.demoValidationStrategy = [
