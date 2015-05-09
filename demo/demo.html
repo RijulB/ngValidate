@@ -47,6 +47,10 @@
                     <span>Input 2. Should have minlength=8 and maxlength=32</span>
                     <input type="text" ng-model="user.field2" name="field_2" ng-validate="exampleStrategy3"/>
                 </div>
+                <div class="col-xs-12">
+                    <span>Input 3. Optional. Same as Input 2</span>
+                    <input type="text" ng-model="user.field3" name="field_3" ng-validate="exampleStrategy3" optional/>
+                </div>
             </form>
             <button class="btn btn-default" ng-click="validate()">Broadcast ng-validate event</button>
             <div class="col-xs-12"><br/></div>

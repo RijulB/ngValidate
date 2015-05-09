@@ -8,16 +8,22 @@ module
 
         var validationFunction = function (scope, element, attrs, ctrl, fromBroadcast) {
 
-            //Validate as invisible elements as Valid
+            //Validate invisible elements as Valid
             //check controller visibility-Jquery style (visible if width>0 & height>0, visibility hidden considered visible)
             if(!(element.prop('offsetWidth')>0 && element.prop('offsetHeight')>0)){
                 ctrl.$setValidity("notVisibleValidation",true);
                 return;
             }
 
-            //Validate as disabled elements as Valid
-            if(!!attrs.disabled){
-                ctrl.$setValidity("notVisibleValidation",true);
+            //Validate disabled elements as Valid
+            if(!!attrs.disabled) {
+                ctrl.$setValidity("inputDisabledValidation", true);
+                return;
+            }
+
+            //Validate optional elements with zero length as Valid
+            if(typeof attrs.optional !='undefined' && attrs.optional!='false' && element.val().length==0){
+                ctrl.$setValidity("optionalValidation",true);
                 return;
             }
 

@@ -52,6 +52,8 @@ ngValidateFactory.strategies.demoStrategy = [
         - [email](#email)
     - [Custom Strategies](#custom-strategies)
     - [Event](#ng-validate-event)
+    - [Special Attributes](#specia-attributes)
+        - [optional](#optional)
 - [API Documentation](#api-documentation)
     - [ngValidate.strategies Object](#ngValidate-strategies)
         - [required](#required)
@@ -208,6 +210,16 @@ On Input blur
 `ng-validate` event
 
 Example: `$scope.$broadcast('ng-validate')`
+
+###Special Attributes
+ngValidate provides some special attributes to add particular functionality.
+
+####optional
+This attribute validates the element as true if its length is zero. Otherwise, it will check against the strategy mentioned. This is useful when you want an input field to be optional but match certain conditions. For ex an optional password but minimum length 8.
+
+Usage: `ng-validate="[your strategy]" optional[or optional=true]`
+
+Example: `<input name="demo-input-1" ng-model="demo.input1" ng-validate="demoValidationStrategy" optional>`
 
 ##API Documentation
 ###ngValidateFactory.strategies Object
