@@ -68,11 +68,17 @@ module
             require: 'ngModel',
             scope: true,
             link: function (scope, element, attrs, ctrl) {
-                element.after($compile(angular.element('<span ng-show="errorStatus" ng-bind="errorMessage"></span>'))(scope));
-                scope.$on('ng-validate',function(){validationFunction(scope, element, attrs, ctrl, true)});
-                element.on('blur',function(){
-                    validationFunction(scope, element, attrs, ctrl, false);
-                })
+                element.after($compile(angular.element('<span ng-show="errorStatus" ng-bind="errorMessage" class="'+ngValidateFactory.options.errorMessageCSSClass+'"></span>'))(scope));
+
+                if(ngValidateFactory.options.validateOnEvent==true){
+                    scope.$on('ng-validate',function(){validationFunction(scope, element, attrs, ctrl, true)});
+                }
+
+                if(ngValidateFactory.options.validateOnBlur==true){
+                    element.on('blur',function(){
+                        validationFunction(scope, element, attrs, ctrl, false);
+                    })
+                }
             }
         };
 
@@ -81,6 +87,13 @@ module
 
 .factory('ngValidateFactory',function(){
         var ngValidate = {};
+
+        //options
+        ngValidate.options={
+            validateOnEvent: true,
+            validateOnBlur: true,
+            errorMessageCSSClass: 'hasError'
+        };
 
         //generic function example
         ngValidate.allowedChars = function(){
