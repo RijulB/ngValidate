@@ -104,7 +104,7 @@ module
         };
 
         ngValidate.emailPattern = function(testVal){
-            return pattern(testVal,/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+            return ngValidate.pattern(testVal,/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
         };
 
         ngValidate.equalTo = function(testVal,expectedVal){
@@ -130,7 +130,7 @@ module
         }];
 
         ngValidate.strategies.email = [{
-            value:[ngValidate.maxLength,32],
+            value:ngValidate.emailPattern,
             message:'Please enter valid email address'
         }];
 
