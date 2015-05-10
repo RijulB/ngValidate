@@ -21,12 +21,6 @@ module
                 return;
             }
 
-            //Validate optional elements with zero length as Valid
-            if(typeof attrs.optional !='undefined' && attrs.optional!='false' && element.val().length==0){
-                ctrl.$setValidity("optionalValidation",true);
-                return;
-            }
-
             var strategy = attrs.ngValidate;
             var validationCase = ngValidateFactory.strategies[strategy];
 
@@ -50,6 +44,11 @@ module
                     var argumentsArray = validationCase[i].value.slice(1);
                     argumentsArray.unshift(element.val());
                     isValid = validationCase[i].value[0].apply(null,argumentsArray);
+                }
+
+                //Validate optional elements with zero length as Valid
+                if(typeof attrs.optional !='undefined' && attrs.optional!='false' && element.val().length==0){
+                    isValid = true;
                 }
 
                 ctrl.$setValidity(strategy +"-"+ i,isValid);
